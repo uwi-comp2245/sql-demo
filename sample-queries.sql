@@ -41,7 +41,7 @@ DELETE FROM students where id = 689 AND id = 241; -- specific rows
 -- JOINS
 SELECT * FROM students JOIN grades;
 SELECT * FROM students JOIN grades ON id = student_id;
-SELECT name, course_id, grade FROM students JOIN grades ON students.id = student_id;
+SELECT students.name, grades.course_id, grades.grade FROM students JOIN grades ON students.id = student_id;
 SELECT name, g.* FROM students s JOIN grades g ON s.id = g.student_id;
 
 -- What courses have been taken by both Bart and Lisa?
@@ -53,12 +53,12 @@ FROM courses c
      JOIN students lisa ON g2.student_id = lisa.id
 WHERE bart.name = 'Bart'
       AND lisa.name = 'Lisa';
-      
+
 -- What are the names of all teachers Bart has had?
 SELECT DISTINCT t.name
 FROM teachers t
      JOIN courses c ON c.teacher_id = t.id
-     JOIN grades g ON g.course_id = c.id 
+     JOIN grades g ON g.course_id = c.id
      JOIN students s ON s.id = g.student_id
 WHERE s.name = 'Bart';
 
