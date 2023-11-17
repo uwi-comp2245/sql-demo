@@ -4,10 +4,10 @@
 // to an HTML page.
 
 // Connection
-$host = 'localhost';
+$host = 'localhost:8889';
 $dbname = 'simpsons';
 $username = 'root';
-$password = '';
+$password = 'root';
 
 //echo $host . ' ' . $username;
 
@@ -41,12 +41,15 @@ $statement = $conn->query("SELECT * FROM grades");
 $grades = $statement->fetchAll(PDO::FETCH_ASSOC);
 //var_dump($grades);
 
-// Example of a prepared statement.
-$stmt = $conn->prepare('SELECT name FROM students');
-// $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT); // <-- filter your data first, especially important for INSERT, UPDATE, etc.
-// $stmt->bindParam(':id', $id, PDO::PARAM_INT); // <-- Automatically sanitized for SQL by PDO
+// Example of a prepared statement used to return a single student
+// by their id.
+// Ensure you add ?id=123 to your URL to test.
+$id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT); // <-- filter your data first, especially important for INSERT, UPDATE, etc.
+$stmt = $conn->prepare('SELECT name FROM students WHERE id = :id');
+$stmt->bindParam(':id', $id, PDO::PARAM_INT); // <-- Automatically sanitized for SQL by PDO
 $stmt->execute();
-$student = $stmt->fetchAll();
+$student = $stmt->fetch(PDO::FETCH_ASSOC);
+// var_dump($student);
 
 
 require 'index.view.php';
